@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <title>Property</title>
+</head>
+
+<body>
+
+<h1 id="title">Property</h1>
+<p id="price"></p>
+
+<p>This is where property details will go.</p>
+
+<br>
+
+<a id="applyBtn">
+  Start Approval
+</a>
+
+<br><br>
+
+<a href="rentals.html">
+  ← Back to listings
+</a>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const unit = params.get("unit");
+
+const title = document.getElementById("title");
+const price = document.getElementById("price");
+const applyBtn = document.getElementById("applyBtn");
+
+if (unit === "Studio101") {
+  title.innerText = "Studio 101";
+  price.innerText = "$1,200 / month";
+}
+
+if (unit === "Room1A") {
+  title.innerText = "Room 1A";
+  price.innerText = "$700 / month";
+}
+
+applyBtn.href = "apply.html?unit=" + unit;
+</script>
+
+</body>
+</html>
