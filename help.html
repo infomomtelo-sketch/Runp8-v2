@@ -1,1 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <title>P8 Helpers</title>
+</head>
 
+<body>
+
+<h1>P8 Helpers</h1>
+
+<p id="unitText"></p>
+
+<div>
+  <h3>Move-In Help</h3>
+  <p>Get help with move-in questions and basic support.</p>
+</div>
+
+<br>
+
+<div>
+  <h3>Utilities Setup</h3>
+  <p>Guidance for electricity, water, internet, and other setup steps.</p>
+</div>
+
+<br>
+
+<div>
+  <h3>General Rental Support</h3>
+  <p>Ask about next steps, documents, or move-in preparation.</p>
+</div>
+
+<br><br>
+
+<a href="approved.html">← Back</a>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const unit = params.get("unit") || "Unknown Property";
+
+document.getElementById("unitText").innerText =
+  "Property: " + unit;
+</script>
+
+</body>
+</html>
