@@ -1,1 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <title>Approved</title>
+</head>
 
+<body>
+
+<h1>You’re in the next step</h1>
+
+<p id="unitText"></p>
+
+<div>
+  <h3>Schedule Showing</h3>
+  <p>Choose an available time to view the property.</p>
+  <a href="showing.html">Continue</a>
+</div>
+
+<br>
+
+<div>
+  <h3>Move-In Ready</h3>
+  <p>Review payment and agreement steps.</p>
+  <a href="pay.html">Continue</a>
+</div>
+
+<br>
+
+<div>
+  <h3>P8 Helpers</h3>
+  <p>Get support for move-in, utilities, and rental help.</p>
+  <a href="help.html">Continue</a>
+</div>
+
+<br><br>
+
+<a href="rentals.html">← Back to rentals</a>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const unit = params.get("unit") || "Unknown Property";
+
+document.getElementById("unitText").innerText = "Selected property: " + unit;
+</script>
+
+</body>
+</html>
