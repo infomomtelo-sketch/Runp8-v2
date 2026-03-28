@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <title>Schedule Showing</title>
+</head>
+
+<body>
+
+<h1>Schedule Showing</h1>
+
+<p id="unitText"></p>
+
+<div>
+  <h3>Available Times</h3>
+
+  <button type="button">Friday - 10:00 AM</button>
+  <br><br>
+
+  <button type="button">Saturday - 1:00 PM</button>
+  <br><br>
+
+  <button type="button">Sunday - 3:00 PM</button>
+</div>
+
+<br><br>
+
+<a href="approved.html">← Back</a>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const unit = params.get("unit") || "Unknown Property";
+
+document.getElementById("unitText").innerText = "Property: " + unit;
+</script>
+
+</body>
+</html>
