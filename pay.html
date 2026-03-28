@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <title>Move-In Payment</title>
+</head>
+
+<body>
+
+<h1>Move-In Ready</h1>
+
+<p id="unitText"></p>
+
+<div>
+  <h3>Payment Breakdown</h3>
+
+  <p>First Month Rent: $1,200</p>
+  <p>Security Deposit: $1,200</p>
+
+  <strong>Total Due: $2,400</strong>
+</div>
+
+<br>
+
+<button type="button">Pay Now</button>
+
+<br><br>
+
+<a href="approved.html">← Back</a>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const unit = params.get("unit") || "Unknown Property";
+
+document.getElementById("unitText").innerText =
+  "Property: " + unit;
+</script>
+
+</body>
+</html>
