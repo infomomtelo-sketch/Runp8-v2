@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+<head>
+  <title>List Your Property</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      margin: 0;
+      padding: 20px;
+      color: #0f172a;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .muted {
+      color: #64748b;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin: 0 0 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      box-sizing: border-box;
+      background: white;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .btn,
+    button {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .primary {
+      background: #2f5bea;
+      color: white;
+    }
+
+    .secondary {
+      background: #eef2f7;
+      color: #0f172a;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .preview-row {
+      padding: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: #fff;
+    }
+
+    .preview-label {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+
+    .preview-value {
+      line-height: 1.5;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #475569;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>List Your Property</h1>
+    <p class="muted">
+      Add the main details first. Keep it simple and clear so your property can move into review and renter flow.
+    </p>
+
+    <div class="card" id="formBox">
+      <h2 class="section-title">Property Details</h2>
+
+      <label for="title">Listing title</label>
+      <input id="title" type="text" placeholder="Example: Private Room Near Downtown" />
+
+      <label for="address">Address</label>
+      <input id="address" type="text" placeholder="123 Main St, Hanford, CA" />
+
+      <label for="price">Monthly rent</label>
+      <input id="price" type="number" placeholder="1200" />
+
+      <label for="bedrooms">Bedrooms</label>
+      <select id="bedrooms">
+        <option value="">Choose one</option>
+        <option>Studio</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4+</option>
+      </select>
+
+      <label for="bathrooms">Bathrooms</label>
+      <select id="bathrooms">
+        <option value="">Choose one</option>
+        <option>1</option>
+        <option>1.5</option>
+        <option>2</option>
+        <option>3+</option>
+      </select>
+
+      <label for="availableDate">Available date</label>
+      <input id="availableDate" type="date" />
+
+      <label for="pets">Pets policy</label>
+      <select id="pets">
+        <option value="">Choose one</option>
+        <option>No pets</option>
+        <option>Cats allowed</option>
+        <option>Small pets allowed</option>
+        <option>Case by case</option>
+      </select>
+
+      <label for="description">Description</label>
+      <textarea id="description" placeholder="Describe the property clearly."></textarea>
+
+      <div class="actions">
+        <button id="previewBtn" type="button" class="primary">Preview Listing</button>
+        <button id="clearBtn" type="button" class="secondary">Clear</button>
+      </div>
+
+      <a class="back-link" href="index.html">← Back to home</a>
+    </div>
+
+    <div class="card hidden" id="previewBox">
+      <h2 class="section-title">Listing Preview</h2>
+
+      <div id="previewList"></div>
+
+      <div class="actions">
+        <button id="editBtn" type="button" class="secondary">Back to Edit</button>
+        <button id="submitBtn" type="button" class="primary">Submit Listing</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const formBox = document.getElementById("formBox");
+    const previewBox = document.getElementById("previewBox");
+    const previewList = document.getElementById("previewList");
+
+    const fields = [
+      { id: "title", label: "Listing title" },
+      { id: "address", label: "Address" },
+      { id: "price", label: "Monthly rent" },
+      { id: "bedrooms", label: "Bedrooms" },
+      { id: "bathrooms", label: "Bathrooms" },
+      { id: "availableDate", label: "Available date" },
+      { id: "pets", label: "Pets policy" },
+      { id: "description", label: "Description" }
+    ];
+
+    document.getElementById("previewBtn").addEventListener("click", () => {
+      const title = document.getElementById("title").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const price = document.getElementById("price").value.trim();
+
+      if (!title || !address || !price) {
+        alert("Please complete listing title, address, and monthly rent first.");
+        return;
+      }
+
+      previewList.innerHTML = "";
+
+      fields.forEach(field => {
+        const value = document.getElementById(field.id).value.trim() || "Not provided";
+
+        const row = document.createElement("div");
+        row.className = "preview-row";
+        row.innerHTML = `
+          <div class="preview-label">${field.label}</div>
+          <div class="preview-value">${field.id === "price" && value !== "Not provided" ? "$" + value : value}</div>
+        `;
+        previewList.appendChild(row);
+      });
+
+      formBox.classList.add("hidden");
+      previewBox.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("editBtn").addEventListener("click", () => {
+      previewBox.classList.add("hidden");
+      formBox.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const params = new URLSearchParams();
+      params.set("title", document.getElementById("title").value.trim());
+      params.set("address", document.getElementById("address").value.trim());
+      params.set("price", document.getElementById("price").value.trim());
+
+      window.location.href = "owner-success.html?" + params.toString();
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      fields.forEach(field => {
+        document.getElementById(field.id).value = "";
+      });
+    });
+  </script>
+</body>
+</html>
