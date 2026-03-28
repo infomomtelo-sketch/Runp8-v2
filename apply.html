@@ -1,1 +1,225 @@
+<!doctype html>
+<html>
+<head>
+  <title>Apply</title>
+</head>
 
+<body>
+
+<h1>Rental Application</h1>
+
+<p id="unitText"></p>
+
+<div id="stepBox">
+  <p id="stepLabel"></p>
+  <h2 id="questionText"></h2>
+
+  <div id="inputArea"></div>
+
+  <br>
+
+  <button id="backBtn" type="button" style="display:none;">Back</button>
+  <button id="nextBtn" type="button">Continue</button>
+  <button id="skipBtn" type="button">Skip</button>
+</div>
+
+<div id="summaryBox" style="display:none;">
+  <h2>Review your answers</h2>
+
+  <div id="summaryList"></div>
+
+  <br>
+
+  <button id="editBtn" type="button">Back</button>
+  <button id="submitBtn" type="button">Continue to Review</button>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const unit = params.get("unit") || "Unknown Property";
+
+document.getElementById("unitText").innerText = "Applying for: " + unit;
+
+const steps = [
+  {
+    key: "moveInDate",
+    label: "Step 1 of 5",
+    question: "What is your desired move-in date?",
+    type: "text",
+    placeholder: "Example: April 15, 2026"
+  },
+  {
+    key: "monthlyIncome",
+    label: "Step 2 of 5",
+    question: "What is your monthly household income?",
+    type: "chips",
+    options: ["Under $2,000", "$2,000-$4,000", "$4,000-$6,000", "$6,000+"]
+  },
+  {
+    key: "occupants",
+    label: "Step 3 of 5",
+    question: "How many occupants will live in the property?",
+    type: "chips",
+    options: ["1", "2", "3", "4+"]
+  },
+  {
+    key: "pets",
+    label: "Step 4 of 5",
+    question: "Do you have pets?",
+    type: "chips",
+    options: ["No pets", "Yes, 1 pet", "Yes, 2+ pets"]
+  },
+  {
+    key: "creditRange",
+    label: "Step 5 of 5",
+    question: "What is your estimated credit range?",
+    type: "chips",
+    options: ["Under 600", "600-649", "650-699", "700+"]
+  }
+];
+
+const data = {
+  moveInDate: "",
+  monthlyIncome: "",
+  occupants: "",
+  pets: "",
+  creditRange: ""
+};
+
+let currentStep = 0;
+
+const stepLabel = document.getElementById("stepLabel");
+const questionText = document.getElementById("questionText");
+const inputArea = document.getElementById("inputArea");
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+const skipBtn = document.getElementById("skipBtn");
+const summaryBox = document.getElementById("summaryBox");
+const stepBox = document.getElementById("stepBox");
+const summaryList = document.getElementById("summaryList");
+const editBtn = document.getElementById("editBtn");
+const submitBtn = document.getElementById("submitBtn");
+
+function renderStep() {
+  const step = steps[currentStep];
+
+  stepLabel.innerText = step.label;
+  questionText.innerText = step.question;
+  inputArea.innerHTML = "";
+  backBtn.style.display = currentStep === 0 ? "none" : "inline-block";
+
+  if (step.type === "text") {
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = step.placeholder || "";
+    input.value = data[step.key] || "";
+    input.id = "stepInput";
+    inputArea.appendChild(input);
+  }
+
+  if (step.type === "chips") {
+    step.options.forEach(option => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.innerText = option;
+      btn.style.marginRight = "8px";
+      btn.style.marginBottom = "8px";
+
+      if (data[step.key] === option) {
+        btn.style.fontWeight = "bold";
+      }
+
+      btn.addEventListener("click", () => {
+        data[step.key] = option;
+        renderStep();
+      });
+
+      inputArea.appendChild(btn);
+    });
+  }
+}
+
+function validateStep() {
+  const step = steps[currentStep];
+
+  if (step.type === "text") {
+    const input = document.getElementById("stepInput");
+    const value = input.value.trim();
+
+    if (!value) {
+      alert("Please complete this step or press Skip.");
+      return false;
+    }
+
+    data[step.key] = value;
+    return true;
+  }
+
+  if (step.type === "chips") {
+    if (!data[step.key]) {
+      alert("Please choose an option or press Skip.");
+      return false;
+    }
+    return true;
+  }
+
+  return true;
+}
+
+function goNext() {
+  if (currentStep < steps.length - 1) {
+    currentStep += 1;
+    renderStep();
+  } else {
+    showSummary();
+  }
+}
+
+function showSummary() {
+  stepBox.style.display = "none";
+  summaryBox.style.display = "block";
+  summaryList.innerHTML = "";
+
+  steps.forEach(step => {
+    const row = document.createElement("p");
+    row.innerText = step.question + ": " + (data[step.key] || "Skipped");
+    summaryList.appendChild(row);
+  });
+}
+
+nextBtn.addEventListener("click", () => {
+  if (!validateStep()) return;
+  goNext();
+});
+
+skipBtn.addEventListener("click", () => {
+  const step = steps[currentStep];
+  if (!data[step.key]) {
+    data[step.key] = "Skipped";
+  }
+  goNext();
+});
+
+backBtn.addEventListener("click", () => {
+  if (currentStep > 0) {
+    currentStep -= 1;
+    renderStep();
+  }
+});
+
+editBtn.addEventListener("click", () => {
+  summaryBox.style.display = "none";
+  stepBox.style.display = "block";
+  currentStep = steps.length - 1;
+  renderStep();
+});
+
+submitBtn.addEventListener("click", () => {
+  window.location.href = "approved.html?unit=" + unit;
+});
+
+renderStep();
+</script>
+
+</body>
+</html>
