@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Approved</title>
+  <title>Next Steps</title>
 </head>
 
 <body>
@@ -10,39 +10,65 @@
 
 <p id="unitText"></p>
 
+<br>
+
+<!-- SHOWING -->
 <div>
   <h3>Schedule Showing</h3>
   <p>Choose an available time to view the property.</p>
-  <a href="showing.html">Continue</a>
+
+  <a id="showingLink" href="#">
+    Continue
+  </a>
 </div>
 
 <br>
 
+<!-- PAYMENT -->
 <div>
   <h3>Move-In Ready</h3>
   <p>Review payment and agreement steps.</p>
-  <a id="payLink" href="#">Continue</a>
+
+  <a id="payLink" href="#">
+    Continue
+  </a>
 </div>
 
 <br>
 
+<!-- HELP -->
 <div>
   <h3>P8 Helpers</h3>
   <p>Get support for move-in, utilities, and rental help.</p>
-  <a id="helpLink" href="#">Continue</a>
+
+  <a id="helpLink" href="#">
+    Continue
+  </a>
 </div>
 
 <br><br>
 
-<a href="rentals.html">← Back to rentals</a>
+<a href="rentals.html">
+  ← Back to rentals
+</a>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const unit = params.get("unit") || "Unknown Property";
 
-document.getElementById("unitText").innerText = "Selected property: " + unit;
-document.getElementById("showingLink").href = "showing.html?unit=" + unit;
-document.getElementById("payLink").href = "pay.html?unit=" + unit;
+// show selected property
+document.getElementById("unitText").innerText =
+  "Selected property: " + unit;
+
+// pass property to next steps
+document.getElementById("showingLink").href =
+  "showing.html?unit=" + unit;
+
+document.getElementById("payLink").href =
+  "pay.html?unit=" + unit;
+
+document.getElementById("helpLink").href =
+  "help.html?unit=" + unit;
 </script>
 
 </body>
