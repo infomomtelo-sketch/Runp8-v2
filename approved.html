@@ -41,6 +41,8 @@ const params = new URLSearchParams(window.location.search);
 const unit = params.get("unit") || "Unknown Property";
 
 document.getElementById("unitText").innerText = "Selected property: " + unit;
+document.getElementById("showingLink").href = "showing.html?unit=" + unit;
+document.getElementById("payLink").href = "pay.html?unit=" + unit;
 </script>
 
 </body>
